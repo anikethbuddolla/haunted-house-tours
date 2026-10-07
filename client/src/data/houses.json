@@ -1,0 +1,8 @@
+[
+  { "id": 1, "name": "Willow Creek Cottage", "scare": "mild", "description": "A cozy cottage where teacups rattle on their own at midnight." },
+  { "id": 2, "name": "The Lantern Inn", "scare": "mild", "description": "An old inn where a friendly ghost still lights the hallway lamps." },
+  { "id": 3, "name": "Blackwood Manor", "scare": "spooky", "description": "A crumbling manor where portraits follow you with their eyes." },
+  { "id": 4, "name": "Hollow Pines Schoolhouse", "scare": "spooky", "description": "An abandoned schoolhouse where chalk scrapes the board after dark." },
+  { "id": 5, "name": "Ravencrest Asylum", "scare": "terrifying", "description": "A sealed asylum where screams echo from the locked east wing." },
+  { "id": 6, "name": "The Crimson Cellar", "scare": "terrifying", "description": "A basement maze where the lights die and something breathes beside you." }
+]
