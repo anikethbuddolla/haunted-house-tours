@@ -3,8 +3,8 @@
 ## Entry 1
 - What I asked for: I asked Claude Code to scaffold my Haunted House Tours project with Vite and React, create a houses.json file with 6 houses, build HouseCard and HouseGrid components, add a scare-level dropdown filter with useState, and add a booking form that only renders.
 - What it produced: A client folder with a Vite React app, houses.json, HouseCard and HouseGrid components, a working dropdown filter, a non-saving booking form, and a first commit.
-- What I fixed or rejected: [write one real thing here, like a change you made or something you rejected. If nothing, write "Nothing needed fixing."]
-- How I verified it:
+- What I fixed or rejected: Claude Code's attempt to create the public GitHub repo was blocked, so I had to push myself. My first try failed ("not a git repository", then "src refspec main does not match any") because I ran the git commands from the parent C2C AI-project folder instead of haunted-house-tours, and my git init there made an extra empty repo. Claude Code checked it had 0 commits and removed it, then I created the repo and pushed from inside haunted-house-tours, which worked.
+- How I verified it: Claude Code ran npm run build with no errors and started npm run dev. In the browser the page showed the "Haunted House Tours" heading and 6 house cards, picking "terrifying" showed only the 2 terrifying houses, the booking form showed its 4 fields, and the console had no errors. After pushing, the haunted-house-tours repo on GitHub had the client folder and the "scaffold" commit.
 
 ## Entry 2
 - What I asked for: I asked Claude Code to add routing with react-router-dom (Home, /houses, /book) and a Nav with Link tags, pass all house data to HouseCard through props, keep the scare-level filter, and add a "My Tour" list kept in useState in App with add and remove buttons, a "My Tour (N)" count in the nav, and a "No houses added yet" message when empty.
