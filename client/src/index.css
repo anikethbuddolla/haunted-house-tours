@@ -74,3 +74,47 @@ button {
   border-radius: 6px;
   cursor: pointer;
 }
+
+/* Top navigation bar */
+.nav {
+  display: flex;
+  gap: 20px;
+  padding: 12px 16px;
+  background: #1e1a25;
+  border-bottom: 1px solid #3a3245;
+}
+
+.nav a {
+  color: #e8e4ee;
+  text-decoration: none;
+}
+
+.nav a:hover {
+  color: #ff7a1a;
+}
+
+.nav .tour-count {
+  margin-left: auto;
+  color: #ff7a1a;
+}
+
+.house-card button,
+.tour-list button {
+  background: #3a3245;
+  color: #e8e4ee;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.tour-list {
+  background: #1e1a25;
+  border: 1px solid #3a3245;
+  border-radius: 8px;
+  padding: 16px;
+  max-width: 480px;
+}
+
+.tour-list li {
+  margin-bottom: 8px;
+}

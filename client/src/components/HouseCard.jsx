@@ -1,11 +1,12 @@
-// HouseCard: shows one haunted house (name, scare level, description).
-// It receives a single `house` object as a prop from HouseGrid.
-function HouseCard({ house }) {
+// HouseCard: shows one haunted house. It has no house data of its own;
+// everything (name, scare, description, onAdd) arrives as props from HouseGrid.
+function HouseCard({ name, scare, description, onAdd }) {
   return (
     <article className="house-card">
-      <h3>{house.name}</h3>
-      <span className={`scare-badge scare-${house.scare}`}>{house.scare}</span>
-      <p>{house.description}</p>
+      <h3>{name}</h3>
+      <span className={`scare-badge scare-${scare}`}>{scare}</span>
+      <p>{description}</p>
+      <button onClick={onAdd}>Add to my tour</button>
     </article>
   )
 }
