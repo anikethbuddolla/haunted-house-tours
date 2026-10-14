@@ -22,7 +22,7 @@ function HousesPage({ tourList, onAdd, onRemove }) {
         </select>
       </label>
 
-      <HouseGrid scare={scare} onAdd={onAdd} />
+      <HouseGrid key={scare} scare={scare} onAdd={onAdd} />
 
       <TourList tourList={tourList} onRemove={onRemove} />
     </section>

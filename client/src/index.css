@@ -118,3 +118,25 @@ button {
 .tour-list li {
   margin-bottom: 8px;
 }
+
+/* Loading, error, and empty messages */
+.status {
+  margin: 20px 0 40px;
+}
+
+.status.error,
+.form-error {
+  color: #ff8a8e;
+}
+
+.form-success {
+  color: #8fd18f;
+}
+
+.status button {
+  background: #3a3245;
+  color: #e8e4ee;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
