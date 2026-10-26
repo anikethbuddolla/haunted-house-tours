@@ -25,7 +25,7 @@ cd ../client && npm install
 cd server
 npm start
 ```
-You should see `API running at http://localhost:3001`. The first run creates `server/haunted.db` and fills it with the houses from `client/src/data/houses.json`.
+You should see `API running at http://localhost:3001`. The first run creates `server/haunted.db`, fills it with the houses from `client/src/data/houses.json`, and adds 3 tour slots per house.
 
 **Terminal 2: React app** (port 5173)
 ```bash
@@ -40,7 +40,9 @@ The React dev server forwards every `/api/...` request to the API on port 3001 (
 ## Pages
 - `/`: home page
 - `/houses`: house grid with a scare-level filter and a "My Tour" list
-- `/book`: booking request form (saved to the database)
+- `/book`: booking request form
+
+> **Capstone in progress:** the API now uses tour slots (`GET /api/houses/:id/slots`). `POST /api/bookings` is a stub that returns 501 until the booking logic is built, so the `/book` form currently can't save.
 
 ## API
 See [API_CONTRACT.md](API_CONTRACT.md). Quick check with the API running:
@@ -49,4 +51,4 @@ curl http://localhost:3001/api/houses?scare=terrifying
 ```
 
 ## Reset the data
-Stop the API, delete `server/haunted.db`, and start it again. The houses are re-seeded and all bookings are cleared.
+Stop the API, delete `server/haunted.db`, and start it again. The houses and slots are re-seeded and all bookings are cleared.

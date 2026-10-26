@@ -21,24 +21,33 @@ app.get('/api/houses', (req, res) => {
   res.json(houses)
 })
 
-// POST /api/bookings: save a booking request. 400 if name or email is empty, otherwise 201 + saved row.
-app.post('/api/bookings', (req, res) => {
-  const body = req.body || {}
-  const name = typeof body.name === 'string' ? body.name.trim() : ''
-  const email = typeof body.email === 'string' ? body.email.trim() : ''
-  const message = typeof body.message === 'string' ? body.message.trim() : ''
-  const scare = SCARE_LEVELS.includes(body.scare) ? body.scare : 'mild'
-
-  if (!name || !email) {
-    return res.status(400).json({ error: 'Name and email are required.' })
+// GET /api/houses/:id/slots: one house's tour slots with spots_left. 404 if the house does not exist.
+app.get('/api/houses/:id/slots', (req, res) => {
+  const house = db.prepare('SELECT id FROM houses WHERE id = ?').get(req.params.id)
+  if (!house) {
+    return res.status(404).json({ error: 'House not found' })
   }
 
-  // The ? placeholders keep user input out of the SQL text (prevents SQL injection).
-  const result = db
-    .prepare('INSERT INTO bookings (name, email, message, scare) VALUES (?, ?, ?, ?)')
-    .run(name, email, message, scare)
-  const saved = db.prepare('SELECT * FROM bookings WHERE id = ?').get(result.lastInsertRowid)
-  res.status(201).json(saved)
+  // spots_left is worked out from the bookings every time, not stored:
+  // LEFT JOIN keeps slots with no bookings, SUM adds their party sizes,
+  // and COALESCE turns "no bookings" (NULL) into 0.
+  const slots = db
+    .prepare(
+      `SELECT s.id, s.house_id, s.start_time, s.capacity,
+              s.capacity - COALESCE(SUM(b.party_size), 0) AS spots_left
+       FROM tour_slots s
+       LEFT JOIN bookings b ON b.slot_id = s.id
+       WHERE s.house_id = ?
+       GROUP BY s.id
+       ORDER BY s.start_time`
+    )
+    .all(house.id)
+  res.json(slots)
+})
+
+// POST /api/bookings: stub for now. Booking logic (validation + 409 when full) comes in the next session.
+app.post('/api/bookings', (req, res) => {
+  res.status(501).json({ message: 'not implemented yet' })
 })
 
 // GET /api/bookings: list every saved booking, oldest first.
