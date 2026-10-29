@@ -98,6 +98,16 @@ app.get('/api/bookings', (req, res) => {
   res.json(db.prepare('SELECT * FROM bookings ORDER BY id').all())
 })
 
+// Error handler: keep error replies in the contract's { error } JSON shape and never send
+// Express's default HTML page (it includes a stack trace with local file paths).
+app.use((err, req, res, next) => {
+  if (err.type === 'entity.parse.failed') {
+    return res.status(400).json({ error: 'Request body must be valid JSON.' })
+  }
+  console.error(err)
+  res.status(500).json({ error: 'Something went wrong on the server.' })
+})
+
 app.listen(PORT, () => {
   console.log(`API running at http://localhost:${PORT}`)
 })

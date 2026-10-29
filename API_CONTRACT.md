@@ -1,7 +1,13 @@
 # API Contract
 
 Base URL: `http://localhost:3001` (the React dev server proxies `/api` here).
-All requests and responses use JSON. Errors use the shape `{ "error": "..." }`.
+All requests and responses for the four routes below use JSON. Errors use the shape `{ "error": "..." }`.
+
+Errors that can happen on any of these routes:
+- **400** `{ "error": "Request body must be valid JSON." }`: the request body is not valid JSON.
+- **500** `{ "error": "Something went wrong on the server." }`: an unexpected server error.
+
+Paths not listed here (for example `/api/nope`) are not part of the API and get Express's default HTML 404 page.
 
 ## Data model
 - **houses**: `id, name, scare, description`
