@@ -1,23 +1,28 @@
-# Acceptance Criteria
+# Acceptance Criteria (Capstone)
 
 Run both servers (see README.md), then check each criterion.
 
-## 1. On page load, the grid shows every haunted house stored in the database.
-How to check: open http://localhost:5173/houses. Compare the cards with `curl http://localhost:3001/api/houses`.
+## 1. Opening a house shows its slots with spots left.
+How to check: on /houses, click "View tour times" on any house. Each tour time should show "N spots left" (or "Full").
 - Pass / Fail:
 - Notes:
 
-## 2. Picking "terrifying" in the dropdown shows only terrifying houses.
-How to check: on /houses, pick "terrifying" in the Scare level dropdown.
+## 2. A valid booking (name, email, party size) drops spots left by that amount and persists after a refresh and a server restart.
+How to check: pick a slot, fill in name, email and party size, and click Book. Spots left drops by the party size with no page reload. Refresh the page, then stop the API (Ctrl+C), run `npm start` again, and refresh once more.
 - Pass / Fail:
 - Notes:
 
-## 3. Submitting the booking form, then restarting the server, still shows the request saved.
-How to check: submit the form on /book. Stop the API (Ctrl+C) and run `npm start` again. Open http://localhost:3001/api/bookings.
+## 3. Booking more spots than are left shows "Not enough spots left" and saves nothing.
+How to check: enter a party size bigger than the slot's spots left and click Book. Then open http://localhost:3001/api/bookings and confirm no new row.
 - Pass / Fail:
 - Notes:
 
-## 4. Submitting with an empty name or email shows an error and saves nothing.
-How to check: on /book, leave Name (or Email) empty and click Send Request. Then open http://localhost:3001/api/bookings and confirm no new row.
+## 4. An empty name or email shows an error and saves nothing.
+How to check: leave Name (or Email) empty and click Book. Then open http://localhost:3001/api/bookings and confirm no new row.
+- Pass / Fail:
+- Notes:
+
+## 5. A slot with 0 spots left shows "Full" and its book button is disabled.
+How to check: book a slot until spots left reaches 0 (for example, a party equal to the slot's spots left). The slot shows "Full", its button is greyed out, and it can't be picked in the Tour time dropdown.
 - Pass / Fail:
 - Notes:

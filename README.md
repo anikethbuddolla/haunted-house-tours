@@ -1,6 +1,6 @@
 # Haunted House Tours
 
-A haunted house tour site where visitors browse houses by scare level (mild, spooky, terrifying), build a tour list, and send a tour booking request that is saved to a database.
+A haunted house tour site where visitors browse houses by scare level (mild, spooky, terrifying), open a house to see its tour times with spots left, and book spots. Tours can never be overbooked.
 
 ## Stack
 - **Front end:** React + Vite + React Router (in `client/`)
@@ -40,9 +40,7 @@ The React dev server forwards every `/api/...` request to the API on port 3001 (
 ## Pages
 - `/`: home page
 - `/houses`: house grid with a scare-level filter and a "My Tour" list
-- `/book`: booking request form
-
-> **Capstone in progress:** the API now uses tour slots (`GET /api/houses/:id/slots`). `POST /api/bookings` is a stub that returns 501 until the booking logic is built, so the `/book` form currently can't save.
+- `/houses/:id`: one house's tour times with spots left, and the booking form (a full slot shows "Full")
 
 ## API
 See [API_CONTRACT.md](API_CONTRACT.md). Quick check with the API running:

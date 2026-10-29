@@ -35,25 +35,27 @@ Returns one house's tour slots, earliest first, with spots left.
 **404** `{ "error": "House not found" }` if no house has that id.
 
 ## POST /api/bookings
-**Status: not implemented yet.** It currently always returns:
-
-**501** `{ "message": "not implemented yet" }`
-
-Planned behavior (next session):
+Books `party_size` spots in one tour slot.
 
 Request body:
 ```json
 { "slot_id": 1, "name": "Sam", "email": "sam@example.com", "party_size": 2 }
 ```
-- **201**: the saved booking row.
-  ```json
-  { "id": 1, "slot_id": 1, "name": "Sam", "email": "sam@example.com", "party_size": 2, "created_at": "2026-10-25 18:00:00" }
-  ```
-- **400** `{ "error": "..." }`: name or email empty, or party_size is not a whole number of at least 1.
-- **404** `{ "error": "Slot not found" }`: no slot has that `slot_id`.
-- **409** `{ "error": "Not enough spots left" }`: `party_size` is more than the slot's `spots_left`. Nothing is saved.
+
+Checks, in this order (the first one that fails decides the response):
+1. **400** `{ "error": "Name and email are required." }`: `name` or `email` is missing, empty, or only spaces.
+2. **400** `{ "error": "Party size must be a whole number of at least 1." }`: `party_size` is not a JSON whole number of at least 1 (`0`, `2.5` and `"2"` are all rejected).
+3. **404** `{ "error": "Slot not found" }`: no slot has that `slot_id` (or `slot_id` is not a whole number).
+4. **409** `{ "error": "Not enough spots left" }`: `party_size` is more than the slot's current `spots_left`.
+
+Steps 3 and 4 and the insert run in one database transaction, so two bookings at the same moment cannot overbook a slot. When any check fails, nothing is saved.
+
+**201**: the saved booking row plus the slot's new `spots_left`.
+```json
+{ "id": 1, "slot_id": 1, "name": "Sam", "email": "sam@example.com", "party_size": 2, "created_at": "2026-10-28 18:00:00", "spots_left": 2 }
+```
 
 ## GET /api/bookings
 Returns all saved bookings, oldest first.
 
-**200**: an array of booking rows (same shape as the planned POST 201 response).
+**200**: an array of booking rows: `{ id, slot_id, name, email, party_size, created_at }` (no `spots_left`).

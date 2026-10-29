@@ -3,10 +3,10 @@ import { Routes, Route } from 'react-router-dom'
 import Nav from './components/Nav.jsx'
 import HomePage from './pages/HomePage.jsx'
 import HousesPage from './pages/HousesPage.jsx'
-import BookingForm from './components/BookingForm.jsx'
+import HousePage from './pages/HousePage.jsx'
 
 // App: the top-level component. It owns the tour list state and decides
-// which page to show for each URL.
+// which page to show for each URL. Booking happens on each house's own page.
 function App() {
   // State lives here ("lifting state up") because both Nav (the count) and
   // HousesPage (add/remove) need it. Children get it through props.
@@ -41,7 +41,8 @@ function App() {
               />
             }
           />
-          <Route path="/book" element={<BookingForm />} />
+          {/* :id is a URL parameter, so /houses/3 shows house 3 */}
+          <Route path="/houses/:id" element={<HousePage />} />
         </Routes>
       </main>
     </>

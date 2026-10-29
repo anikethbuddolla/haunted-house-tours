@@ -66,6 +66,7 @@ function HouseGrid({ scare, onAdd }) {
         // key gives React a unique id for each card so it can track them in the list.
         <HouseCard
           key={house.id}
+          id={house.id}
           name={house.name}
           scare={house.scare}
           description={house.description}

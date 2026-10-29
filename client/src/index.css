@@ -140,3 +140,71 @@ button {
   border-radius: 6px;
   cursor: pointer;
 }
+
+/* Card links and house page */
+.card-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.button-link {
+  background: #ff7a1a;
+  color: #121016;
+  padding: 6px 8px;
+  border-radius: 6px;
+  text-decoration: none;
+}
+
+main a {
+  color: #ff7a1a;
+}
+
+main a.button-link {
+  color: #121016;
+}
+
+/* Tour slot list */
+.slot-list {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 32px;
+  max-width: 560px;
+}
+
+.slot {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  background: #1e1a25;
+  border: 1px solid #3a3245;
+  border-radius: 8px;
+}
+
+.slot.selected {
+  border-color: #ff7a1a;
+}
+
+.slot-time {
+  flex: 1;
+}
+
+.slot-spots.full {
+  color: #ff8a8e;
+  font-weight: bold;
+}
+
+.slot button {
+  background: #3a3245;
+  color: #e8e4ee;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

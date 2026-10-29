@@ -45,9 +45,52 @@ app.get('/api/houses/:id/slots', (req, res) => {
   res.json(slots)
 })
 
-// POST /api/bookings: stub for now. Booking logic (validation + 409 when full) comes in the next session.
+// Spots left for one slot: capacity minus the party sizes already booked (undefined if no such slot).
+const getSlotSpots = db.prepare(
+  `SELECT s.id, s.capacity - COALESCE(SUM(b.party_size), 0) AS spots_left
+   FROM tour_slots s
+   LEFT JOIN bookings b ON b.slot_id = s.id
+   WHERE s.id = ?
+   GROUP BY s.id`
+)
+const insertBooking = db.prepare(
+  'INSERT INTO bookings (slot_id, name, email, party_size) VALUES (?, ?, ?, ?)'
+)
+const getBooking = db.prepare('SELECT * FROM bookings WHERE id = ?')
+
+// The capacity check and the insert run inside ONE transaction, so no other booking
+// can sneak in between "check spots left" and "save". That is what prevents overbooking.
+const bookSlot = db.transaction((slotId, name, email, partySize) => {
+  const slot = getSlotSpots.get(slotId)
+  if (!slot) return { status: 404, body: { error: 'Slot not found' } }
+  if (partySize > slot.spots_left) return { status: 409, body: { error: 'Not enough spots left' } }
+
+  const result = insertBooking.run(slot.id, name, email, partySize)
+  const booking = getBooking.get(result.lastInsertRowid)
+  return { status: 201, body: { ...booking, spots_left: slot.spots_left - partySize } }
+})
+
+// POST /api/bookings: book party_size spots in a slot.
+// 400 bad input, 404 unknown slot, 409 not enough spots, 201 saved row + the slot's new spots_left.
 app.post('/api/bookings', (req, res) => {
-  res.status(501).json({ message: 'not implemented yet' })
+  const body = req.body || {}
+  const name = typeof body.name === 'string' ? body.name.trim() : ''
+  const email = typeof body.email === 'string' ? body.email.trim() : ''
+  const partySize = body.party_size
+  // Anything that isn't a whole number can't match a slot id, so it falls through to 404.
+  const slotId = Number.isInteger(body.slot_id) ? body.slot_id : null
+
+  if (!name || !email) {
+    return res.status(400).json({ error: 'Name and email are required.' })
+  }
+  if (!Number.isInteger(partySize) || partySize < 1) {
+    return res.status(400).json({ error: 'Party size must be a whole number of at least 1.' })
+  }
+
+  // .immediate() takes the database write lock at the start of the transaction,
+  // so even a second server process would have to wait its turn.
+  const { status, body: result } = bookSlot.immediate(slotId, name, email, partySize)
+  res.status(status).json(result)
 })
 
 // GET /api/bookings: list every saved booking, oldest first.

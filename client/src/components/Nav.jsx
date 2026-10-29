@@ -7,7 +7,6 @@ function Nav({ tourCount }) {
     <nav className="nav">
       <Link to="/">Home</Link>
       <Link to="/houses">Houses</Link>
-      <Link to="/book">Book a Tour</Link>
       <Link to="/houses" className="tour-count">My Tour ({tourCount})</Link>
     </nav>
   )
